@@ -23,12 +23,18 @@ class ActorSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    actors = serializers.PrimaryKeyRelatedField(
+        queryset=Actor.objects.all(), many=True
+    )
+    genres = serializers.PrimaryKeyRelatedField(
+        queryset=Genre.objects.all(), many=True
+    )
+
     class Meta:
         model = Movie
         fields = ["id", "title", "description", "actors", "genres", "duration"]
 
 
 class MovieListSerializer(MovieSerializer):
-    actors = ActorSerializer(many=True, read_only=True)
-    genres = GenreSerializer(many=True, read_only=True)
-
+    actors = ActorSerializer(many=True)
+    genres = GenreSerializer(many=True)
